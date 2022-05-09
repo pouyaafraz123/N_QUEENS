@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane focusTraversable="true" prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: rgb(14, 22, 33);" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+    <children>
+      <HBox alignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <TextField fx:id="generation" alignment="CENTER" editable="false" focusTraversable="false" layoutX="10.0" layoutY="10.0" prefWidth="2000.0" style="-fx-background-color: #EBF5EE; -fx-background-radius: 0; -fx-border-color: rgb(14, 22, 33); -fx-border-width: 0 0 0 2;" text="GENERTAION 0" HBox.hgrow="NEVER">
+               <font>
+                  <Font name="System Bold Italic" size="22.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </TextField>
+         </children>
+      </HBox>
+        <AnchorPane layoutX="900.0" layoutY="148.0" prefHeight="200.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+            <children>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="25.0" style="-fx-border-color: #7BDFF2; -fx-border-radius: 25px; -fx-border-width: 3px;" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
+                    <children>
+                        <JFXTextField fx:id="length" alignment="CENTER" focusColor="#4372ff" focusTraversable="false" labelFloat="true" promptText="Length" style="-fx-text-fill: white; -fx-prompt-text-fill: #ffffff90;" text="5" unFocusColor="#5791d0" />
+                        <JFXTextField fx:id="population" alignment="CENTER" focusColor="#4372ff" focusTraversable="false" labelFloat="true" layoutX="10.0" layoutY="98.0" promptText="Population Size" style="-fx-text-fill: white; -fx-prompt-text-fill: #ffffff90;" text="75" unFocusColor="#5791d0" />
+                        <JFXTextField fx:id="max" alignment="CENTER" focusColor="#4372ff" focusTraversable="false" labelFloat="true" layoutX="10.0" layoutY="110.0" promptText="Generation Max" style="-fx-text-fill: white; -fx-prompt-text-fill: #ffffff90;" text="100" unFocusColor="#5791d0" />
+                        <JFXTextField fx:id="rate" alignment="CENTER" focusColor="#4372ff" focusTraversable="false" labelFloat="true" layoutX="10.0" layoutY="123.0" promptText="Mutation Rate" style="-fx-text-fill: white; -fx-prompt-text-fill: #ffffff90;" text="0.01" unFocusColor="#5791d0" />
+                        <HBox alignment="CENTER" spacing="20.0">
+                            <children>
+                                <Button fx:id="start" alignment="CENTER" mnemonicParsing="false" prefWidth="100.0" style="-fx-background-color: #4372ff; -fx-background-radius: 10px;" text="Start" textFill="WHITE" HBox.hgrow="ALWAYS">
+                                    <font>
+                                        <Font name="System Bold Italic" size="13.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                            <VBox.margin>
+                                <Insets />
+                            </VBox.margin>
+                        </HBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                    </padding>
+                </VBox>
+                <TextArea fx:id="area" editable="false" focusTraversable="false" layoutX="34.0" layoutY="340.0" prefHeight="285.0" prefWidth="250.0" text="Solution:" wrapText="true" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="340.0">
+                    <font>
+                        <Font name="System Italic" size="10.0" />
+                    </font>
+                </TextArea>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="container" layoutX="512.0" layoutY="198.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #00000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="50.0" />
+    </children>
+</AnchorPane>
