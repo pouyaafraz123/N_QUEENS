@@ -5,7 +5,6 @@ import model.Chromosome;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.Random;
 
 public class GeneticAlgorithm {
@@ -27,7 +26,7 @@ public class GeneticAlgorithm {
     private int mutations;
     private int generation;
     private int populationSize;
-    private Controller controller;
+    private final Controller controller;
 
     public GeneticAlgorithm(int n, Controller controller) {
         MAX_LENGTH = n;
@@ -83,7 +82,6 @@ public class GeneticAlgorithm {
         }
 
         if (generation >= MAX_GENERATION) {
-            System.out.println("No solution found");
             done = false;
         } else {
             populationSize = population.size();
@@ -91,14 +89,9 @@ public class GeneticAlgorithm {
                 chromosome = population.get(i);
                 if (chromosome.getConflicts() == 0) {
                     solutions.add(chromosome);
-                    printSolution(chromosome);
                 }
             }
         }
-        System.out.println("done.");
-
-        System.out.println("Completed " + generation + " Generations.");
-        System.out.println("Encountered " + mutations + " mutations in " + childCount + " offspring.");
 
         return done;
     }
@@ -136,6 +129,7 @@ public class GeneticAlgorithm {
                 population.get(newIndex2).computeConflicts();
 
                 childCount += 2;
+                controller.onChildCountChange(childCount);
 
 
                 if (childCount % (int) Math.round(1.0 / MUTATION_RATE) == 0) {
@@ -313,32 +307,6 @@ public class GeneticAlgorithm {
         }
     }
 
-    public void printSolution(Chromosome solution) {
-        String[][] board = new String[MAX_LENGTH][MAX_LENGTH];
-
-        for (int x = 0; x < MAX_LENGTH; x++) {
-            for (int y = 0; y < MAX_LENGTH; y++) {
-                board[x][y] = "";
-            }
-        }
-
-        for (int x = 0; x < MAX_LENGTH; x++) {
-            board[x][solution.getGene(x)] = "Q";
-        }
-
-        System.out.println("Board:");
-        for (int y = 0; y < MAX_LENGTH; y++) {
-            for (int x = 0; x < MAX_LENGTH; x++) {
-                if (Objects.equals(board[y][x], "Q")) {
-                    System.out.print("Q ");
-                } else {
-                    System.out.print(". ");
-                }
-            }
-            System.out.print("\n");
-        }
-    }
-
     public void initialize() {
         int shuffles;
         Chromosome newChromosome;
@@ -371,6 +339,7 @@ public class GeneticAlgorithm {
             chromosome.setGene(gene2, tempData);
         }
         mutations++;
+        controller.onMutationChange(mutations);
     }
 
     public int getExclusiveRandomNumber(int high, int except) {
@@ -444,10 +413,6 @@ public class GeneticAlgorithm {
 
     public void setGeneration(int newMaxGeneration) {
         this.MAX_GENERATION = newMaxGeneration;
-    }
-
-    public int getSTART_SIZE() {
-        return START_SIZE;
     }
 
     public void setSTART_SIZE(int START_SIZE) {

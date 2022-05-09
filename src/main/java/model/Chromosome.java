@@ -28,8 +28,8 @@ public class Chromosome implements Comparable<Chromosome>{
 		String[][] board = new String[MAX_LENGTH][MAX_LENGTH];
 		int x;
         int y;
-        int tempx;
-        int tempy;
+        int tempX;
+        int tempY;
         
         int[] dx = new int[] {-1, 1, -1, 1};
         int[] dy = new int[] {-1, 1, 1, -1};
@@ -46,18 +46,18 @@ public class Chromosome implements Comparable<Chromosome>{
 
 
             for(int j = 0; j < 4; j++) {
-                tempx = x;
-                tempy = y;
+                tempX = x;
+                tempY = y;
                 done = false;
                 
                 while(!done) {
-                    tempx += dx[j];
-                    tempy += dy[j];
+                    tempX += dx[j];
+                    tempY += dy[j];
                     
-                    if((tempx < 0 || tempx >= MAX_LENGTH) || (tempy < 0 || tempy >= MAX_LENGTH)) {
+                    if((tempX < 0 || tempX >= MAX_LENGTH) || (tempY < 0 || tempY >= MAX_LENGTH)) {
                         done = true;
                     } else {
-                        if(board[tempx][tempy].equals("Q")) {
+                        if(board[tempX][tempY].equals("Q")) {
                             conflicts++;
                         }
                     }
@@ -100,9 +100,6 @@ public class Chromosome implements Comparable<Chromosome>{
 	public int getConflicts() {
 		return conflicts;
 	}
-	public void setConflicts(int conflicts) {
-		this.conflicts = conflicts;
-	}
 	public boolean isSelected() {
 		return selected;
 	}
@@ -117,6 +114,15 @@ public class Chromosome implements Comparable<Chromosome>{
 	}
 	public int getMaxLength() {
 	   return MAX_LENGTH;
+	}
+
+	public String[][] getTable(){
+		int maxLength = this.getMaxLength();
+		String[][] board = new String[maxLength][maxLength];
+		for(int x = 0; x < maxLength; x++) {
+			board[x][this.getGene(x)] = "Q";
+		}
+		return board;
 	}
 
 	@Override

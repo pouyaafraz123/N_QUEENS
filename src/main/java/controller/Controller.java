@@ -4,8 +4,6 @@ import com.jfoenix.controls.JFXTextField;
 import ga.GeneticAlgorithm;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -20,19 +18,35 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Controller implements Initializable {
+
+    @FXML
+    private TextField mutation;
+
+    @FXML
+    private TextField offspring;
 
     @FXML
     private TextField generation;
 
     @FXML
+    private TextField run;
+
+    @FXML
+    private TextField success;
+
+    @FXML
+    private TextField fail;
+
+    @FXML
     private JFXTextField length;
+
+    @FXML
+    private JFXTextField maxRun;
 
     @FXML
     private JFXTextField population;
@@ -47,6 +61,9 @@ public class Controller implements Initializable {
     private Button start;
 
     @FXML
+    private Button next;
+
+    @FXML
     private TextArea area;
 
     @FXML
@@ -54,6 +71,9 @@ public class Controller implements Initializable {
 
     Thread thread;
     Writer logWriter;
+    AtomicInteger sCount;
+
+    ArrayList<Chromosome> allSolutions = new ArrayList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -62,11 +82,13 @@ public class Controller implements Initializable {
     }
 
 
-    private void runTest(){
+    private void runTest() {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() {
-                test(Integer.parseInt(length.getText()),Double.parseDouble(rate.getText()),
+                sCount = new AtomicInteger(0);
+                test(Integer.parseInt(length.getText()), Integer.parseInt(maxRun.getText()),
+                        Double.parseDouble(rate.getText()),
                         Integer.parseInt(max.getText()));
                 return null;
             }
@@ -75,72 +97,105 @@ public class Controller implements Initializable {
         thread = new Thread(task);
         thread.setDaemon(true);
         thread.start();
-
     }
 
-    private void test(int length,double rate,int maxGeneration) {
-        GeneticAlgorithm ga = new GeneticAlgorithm(length,this);
+    private void test(int length, int maxRun, double rate, int maxGeneration) {
+        GeneticAlgorithm ga = new GeneticAlgorithm(length, this);
         ga.setMutation(rate);
         ga.setGeneration(maxGeneration);
         ga.setSTART_SIZE(Integer.parseInt(population.getText()));
-        String filepath = LocalDate.now()+"_"+LocalTime.now().toString().replace('.','_').replace(':','-') +"_GA-N"+length+"-"+rate+"-"+maxGeneration+".txt";
-        logParameters(length,ga);
-        long startTime = System.nanoTime();
-        long endTime;
-        long totalTime;
-        if(ga.algorithm()) {
-            endTime = System.nanoTime();
-            totalTime = endTime - startTime;
+        String filepath = LocalDate.now() + "_" + LocalTime.now().toString().replace('.', '_')
+                .replace(':', '-') + "_GA-N" + length + "-" + rate + "-" + maxGeneration + ".txt";
+        int failCount = 0;
+        int successCount = 0;
 
-            System.out.println("Done");
-            System.out.println("time in nanoseconds: "+totalTime);
-            System.out.println("Success!");
+        logParameters(length, ga);
+        allSolutions = new ArrayList<>();
+        AtomicInteger runs = new AtomicInteger(1);
 
-            logWriter.add("Runtime in nanoseconds: "+totalTime);
-            logWriter.add("Found at Generation: "+ga.getGeneration());
-            logWriter.add("Population size: "+ga.getPopSize());
-            logWriter.add("");
+        for (int i = 0; i < maxRun; ) {
 
-            ArrayList<Chromosome> solutions = ga.getSolutions();
-            for(Chromosome c: solutions) {
-                logWriter.add(c);
+            if (ga.algorithm()) {
+                i++;
+                successCount++;
+                logWriter.add("Run: " + i);
+                logWriter.add("Found at Generation: " + ga.getGeneration());
+                logWriter.add("Population size: " + ga.getPopSize());
                 logWriter.add("");
-            }
-            Chromosome v = solutions.get(0);
-            String[][] board = new String[v.getMaxLength()][v.getMaxLength()];
-            for(int x = 0; x < v.getMaxLength(); x++) {
-                board[x][v.getGene(x)] = "Q";
-            }
-            Platform.runLater(() -> {
-                try {
-                    Board.drawBoard(container,board);
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
+
+                ArrayList<Chromosome> solutions = ga.getSolutions();
+                allSolutions.addAll(solutions);
+                next.setOnAction(event -> {
+                    sCount.getAndIncrement();
+                    drawSolution(allSolutions);
+                });
+                drawSolution(allSolutions);
+                Platform.runLater(() -> area.setText(allSolutions.toString().replace("[", "")
+                        .replace("]", "")));
+                for (Chromosome c : solutions) {
+                    logWriter.add(c);
+                    logWriter.add("");
                 }
+            } else {
+                failCount++;
+            }
+            int finalFailCount = failCount;
+            int finalSuccessCount = successCount;
+            Platform.runLater(() -> {
+                fail.setText("FAIL " + finalFailCount);
+                success.setText("SUCCESS " + finalSuccessCount);
+                run.setText("RUN " + (runs.getAndIncrement()));
             });
-        } else {
-            System.out.println("Fail!");
+
+            if (failCount >= 100) {
+                fail();
+                break;
+            }
         }
+        logWriter.add("Number of Success: " + successCount);
+        logWriter.add("Number of failures: " + failCount);
         logWriter.writeFile(filepath);
     }
 
-    public void logParameters(int length,GeneticAlgorithm ga) {
+    private void drawSolution(ArrayList<Chromosome> solutions) {
+        Platform.runLater(() -> {
+            try {
+                int size = solutions.size();
+                Board.drawBoard(container, solutions.get(sCount.get() % size).getTable());
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    private void fail() {
+    }
+
+    public void logParameters(int length, GeneticAlgorithm ga) {
         logWriter.add("Genetic Algorithm");
         logWriter.add("Parameters");
-        logWriter.add("MAX_LENGTH/N: "+length);
-        logWriter.add("STARTING_POPULATION: "+ga.getStartSize());
-        logWriter.add("MAX_Generation: "+ga.getMaxGeneration());
-        logWriter.add("MATING_PROBABILITY: "+ga.getMatingProb());
-        logWriter.add("MUTATION_RATE: "+ga.getMutationRate());
-        logWriter.add("MIN_SELECTED_PARENTS: "+ga.getMinSelect());
-        logWriter.add("MAX_SELECTED_PARENTS: "+ga.getMaxSelect());
-        logWriter.add("OFFSPRING_PER_GENERATION: "+ga.getOffspring());
-        logWriter.add("MINIMUM_SHUFFLES: "+ga.getShuffleMin());
-        logWriter.add("MAXIMUM_SHUFFLES: "+ga.getShuffleMax());
+        logWriter.add("MAX_LENGTH/N: " + length);
+        logWriter.add("STARTING_POPULATION: " + ga.getStartSize());
+        logWriter.add("MAX_Generation: " + ga.getMaxGeneration());
+        logWriter.add("MATING_PROBABILITY: " + ga.getMatingProb());
+        logWriter.add("MUTATION_RATE: " + ga.getMutationRate());
+        logWriter.add("MIN_SELECTED_PARENTS: " + ga.getMinSelect());
+        logWriter.add("MAX_SELECTED_PARENTS: " + ga.getMaxSelect());
+        logWriter.add("OFFSPRING_PER_GENERATION: " + ga.getOffspring());
+        logWriter.add("MINIMUM_SHUFFLES: " + ga.getShuffleMin());
+        logWriter.add("MAXIMUM_SHUFFLES: " + ga.getShuffleMax());
         logWriter.add("");
     }
 
-    public void onGenerationChange(int newGeneration){
-        Platform.runLater(() -> generation.setText(String.valueOf(newGeneration)));
+    public void onGenerationChange(int newGeneration) {
+        Platform.runLater(() -> generation.setText("GENERATION " + newGeneration));
+    }
+
+    public void onMutationChange(int mutations) {
+        Platform.runLater(() -> mutation.setText("MUTATION " + mutations));
+    }
+
+    public void onChildCountChange(int childCount) {
+        Platform.runLater(() -> offspring.setText("OFFSPRING " + childCount));
     }
 }
