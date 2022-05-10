@@ -1,0 +1,80 @@
+Genetic Algorithm
+Parameters
+MAX_LENGTH/N: 8
+STARTING_POPULATION: 75
+MAX_Generation: 1000
+MATING_PROBABILITY: 0.7
+MUTATION_RATE: 0.01
+MIN_SELECTED_PARENTS: 10
+MAX_SELECTED_PARENTS: 30.0
+OFFSPRING_PER_GENERATION: 20.0
+MINIMUM_SHUFFLES: 8
+MAXIMUM_SHUFFLES: 20
+
+Run: 1
+Found at Generation: 37
+Population size: 1129
+
+. . . Q . . . . 
+Q . . . . . . . 
+. . . . Q . . . 
+. . . . . . . Q 
+. . . . . Q . . 
+. . Q . . . . . 
+. . . . . . Q . 
+. Q . . . . . . 
+
+Run: 2
+Found at Generation: 12
+Population size: 415
+
+. . . . . . . Q 
+. Q . . . . . . 
+. . . . Q . . . 
+. . Q . . . . . 
+Q . . . . . . . 
+. . . . . . Q . 
+. . . Q . . . . 
+. . . . . Q . . 
+
+Run: 3
+Found at Generation: 2
+Population size: 129
+
+. . Q . . . . . 
+. . . . . . Q . 
+. Q . . . . . . 
+. . . . . . . Q 
+. . . . Q . . . 
+Q . . . . . . . 
+. . . Q . . . . 
+. . . . . Q . . 
+
+Run: 4
+Found at Generation: 75
+Population size: 2239
+
+. . . Q . . . . 
+Q . . . . . . . 
+. . . . Q . . . 
+. . . . . . . Q 
+. Q . . . . . . 
+. . . . . . Q . 
+. . Q . . . . . 
+. . . . . Q . . 
+
+Run: 5
+Found at Generation: 22
+Population size: 711
+
+. . . . . . Q . 
+. . . . Q . . . 
+. . Q . . . . . 
+Q . . . . . . . 
+. . . . . Q . . 
+. . . . . . . Q 
+. Q . . . . . . 
+. . . Q . . . . 
+
+Number of Success: 5
+Number of failures: 0

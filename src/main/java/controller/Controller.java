@@ -14,6 +14,7 @@ import logger.Writer;
 import model.Chromosome;
 import view.Board;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -69,42 +70,68 @@ public class Controller implements Initializable {
     @FXML
     private AnchorPane container;
 
+    @FXML
+    private TextField solutionCount;
+
     Thread thread;
     Writer logWriter;
     AtomicInteger sCount;
+    Task<Void> task;
 
     ArrayList<Chromosome> allSolutions = new ArrayList<>();
+    private boolean isAlreadyStarted = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         logWriter = new Writer();
-        start.setOnAction(event -> runTest());
+        start.setOnAction(event -> {
+            if (!isAlreadyStarted) {
+                runTest();
+            }
+        });
     }
 
 
     private void runTest() {
-        Task<Void> task = new Task<Void>() {
+        task = new Task<Void>() {
             @Override
             protected Void call() {
+                isAlreadyStarted = true;
+                showProgress();
+                Platform.runLater(() -> area.setText("Solutions:"));
                 sCount = new AtomicInteger(0);
                 test(Integer.parseInt(length.getText()), Integer.parseInt(maxRun.getText()),
                         Double.parseDouble(rate.getText()),
                         Integer.parseInt(max.getText()));
+                isAlreadyStarted = false;
                 return null;
             }
         };
-
         thread = new Thread(task);
         thread.setDaemon(true);
         thread.start();
     }
 
+    private void showProgress() {
+        Platform.runLater(() -> Board.drawProgress(container));
+    }
+
     private void test(int length, int maxRun, double rate, int maxGeneration) {
+        logWriter = new Writer();
         GeneticAlgorithm ga = new GeneticAlgorithm(length, this);
+        Platform.runLater(() -> {
+            fail.setText("FAIL " + 0);
+            success.setText("SUCCESS " + 0);
+            run.setText("RUN " + (0));
+        });
         ga.setMutation(rate);
         ga.setGeneration(maxGeneration);
         ga.setSTART_SIZE(Integer.parseInt(population.getText()));
-        String filepath = LocalDate.now() + "_" + LocalTime.now().toString().replace('.', '_')
+        File file = new File("DATA");
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        String filepath = "DATA/" + LocalDate.now() + "_" + LocalTime.now().toString().replace('.', '_')
                 .replace(':', '-') + "_GA-N" + length + "-" + rate + "-" + maxGeneration + ".txt";
         int failCount = 0;
         int successCount = 0;
@@ -161,7 +188,10 @@ public class Controller implements Initializable {
         Platform.runLater(() -> {
             try {
                 int size = solutions.size();
-                Board.drawBoard(container, solutions.get(sCount.get() % size).getTable());
+                if (size != 0) {
+                    solutionCount.setText("SOLUTION " + ((sCount.get() % size) + 1));
+                    Board.drawBoard(container, solutions.get(sCount.get() % size).getTable());
+                }
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -169,6 +199,8 @@ public class Controller implements Initializable {
     }
 
     private void fail() {
+        if (allSolutions.size() == 0)
+            Platform.runLater(() -> Board.drawFail(container));
     }
 
     public void logParameters(int length, GeneticAlgorithm ga) {

@@ -13,9 +13,9 @@
 
 <AnchorPane focusTraversable="true" prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: rgb(14, 22, 33);" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
     <children>
-      <HBox alignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="250.0" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TextField fx:id="mutation" alignment="CENTER" editable="false" focusTraversable="false" layoutX="10.0" layoutY="10.0" style="-fx-background-color: #EBF5EE; -fx-background-radius: 0; -fx-border-color: rgb(14, 22, 33); -fx-border-width: 0 0 0 2;" text="MUTATION 0" HBox.hgrow="ALWAYS">
+            <TextField fx:id="mutation" alignment="CENTER" editable="false" focusTraversable="false" style="-fx-background-color: #8447FF; -fx-background-radius: 25; -fx-text-fill: white;" text="MUTATION 0">
                <font>
                   <Font name="System Bold Italic" size="22.0" />
                </font>
@@ -23,7 +23,7 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
             </TextField>
-            <TextField fx:id="offspring" alignment="CENTER" editable="false" focusTraversable="false" layoutX="610.0" layoutY="10.0" style="-fx-background-color: #EBF5EE; -fx-background-radius: 0; -fx-border-color: rgb(14, 22, 33); -fx-border-width: 0 0 0 2;" text="OFFSPRING 0" HBox.hgrow="ALWAYS">
+            <TextField fx:id="offspring" alignment="CENTER" editable="false" focusTraversable="false" style="-fx-background-color: #8447FF; -fx-background-radius: 25; -fx-text-fill: white;" text="OFFSPRING 0">
                <font>
                   <Font name="System Bold Italic" size="22.0" />
                </font>
@@ -31,7 +31,7 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
             </TextField>
-            <TextField fx:id="generation" alignment="CENTER" editable="false" focusTraversable="false" layoutX="10.0" layoutY="10.0" style="-fx-background-color: #EBF5EE; -fx-background-radius: 0; -fx-border-color: rgb(14, 22, 33); -fx-border-width: 0 0 0 2;" text="GENERTAION 0" HBox.hgrow="ALWAYS">
+            <TextField fx:id="generation" alignment="CENTER" editable="false" focusTraversable="false" style="-fx-background-color: #8447FF; -fx-background-radius: 25; -fx-text-fill: white;" text="GENERTAION 0">
                <font>
                   <Font name="System Bold Italic" size="22.0" />
                </font>
@@ -39,7 +39,7 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
             </TextField>
-            <TextField fx:id="run" alignment="CENTER" editable="false" focusTraversable="false" layoutX="810.0" layoutY="10.0" style="-fx-background-color: #EBF5EE; -fx-background-radius: 0; -fx-border-color: rgb(14, 22, 33); -fx-border-width: 0 0 0 2;" text="RUN 0" HBox.hgrow="ALWAYS">
+            <TextField fx:id="run" alignment="CENTER" editable="false" focusTraversable="false" style="-fx-background-color: #8447FF; -fx-background-radius: 25; -fx-text-fill: white;" text="RUN 0">
                <font>
                   <Font name="System Bold Italic" size="22.0" />
                </font>
@@ -47,7 +47,7 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
             </TextField>
-            <TextField fx:id="success" alignment="CENTER" editable="false" focusTraversable="false" layoutX="910.0" layoutY="10.0" style="-fx-background-color: #EBF5EE; -fx-background-radius: 0; -fx-border-color: rgb(14, 22, 33); -fx-border-width: 0 0 0 2;" text="SUCCESS 0" HBox.hgrow="ALWAYS">
+            <TextField fx:id="success" alignment="CENTER" editable="false" focusTraversable="false" style="-fx-background-color: #8447FF; -fx-background-radius: 25; -fx-text-fill: white;" text="SUCCESS 0">
                <font>
                   <Font name="System Bold Italic" size="22.0" />
                </font>
@@ -55,7 +55,7 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
             </TextField>
-            <TextField fx:id="fail" alignment="CENTER" editable="false" focusTraversable="false" layoutX="970.0" layoutY="10.0" style="-fx-background-color: #EBF5EE; -fx-background-radius: 0; -fx-border-color: rgb(14, 22, 33); -fx-border-width: 0 0 0 2;" text="FAIL 0" HBox.hgrow="ALWAYS">
+            <TextField fx:id="fail" alignment="CENTER" editable="false" focusTraversable="false" style="-fx-background-color: #8447FF; -fx-background-radius: 25; -fx-text-fill: white;" text="FAIL 0">
                <font>
                   <Font name="System Bold Italic" size="22.0" />
                </font>
@@ -63,9 +63,25 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
             </TextField>
+            <TextField fx:id="solutionCount" alignment="CENTER" editable="false" focusTraversable="false" layoutX="20.0" layoutY="400.0" style="-fx-background-color: #8447FF; -fx-background-radius: 25; -fx-text-fill: white;" text="SOLUTION 0">
+               <font>
+                  <Font name="System Bold Italic" size="22.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </TextField>
+            <Button fx:id="next" alignment="CENTER" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" style="-fx-background-color: #4372ff; -fx-background-radius: 25px;" text="NEXT SOLUTION" textFill="WHITE">
+               <font>
+                  <Font name="System Bold Italic" size="20.0" />
+               </font>
+            </Button>
          </children>
-      </HBox>
-        <AnchorPane layoutX="900.0" layoutY="148.0" prefHeight="200.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+         <padding>
+            <Insets bottom="25.0" left="10.0" right="10.0" top="25.0" />
+         </padding>
+      </VBox>
+        <AnchorPane layoutX="900.0" layoutY="148.0" prefHeight="200.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="25.0" style="-fx-border-color: #7BDFF2; -fx-border-radius: 25px; -fx-border-width: 3px;" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
                     <children>
@@ -86,15 +102,6 @@
                                 <Insets />
                             </VBox.margin>
                         </HBox>
-                  <HBox alignment="CENTER" layoutX="38.0" layoutY="288.0" spacing="20.0">
-                     <children>
-                        <Button fx:id="next" alignment="CENTER" mnemonicParsing="false" prefWidth="200.0" style="-fx-background-color: #4372ff; -fx-background-radius: 10px;" text="NEXT SOLUTION" textFill="WHITE" HBox.hgrow="ALWAYS">
-                           <font>
-                              <Font name="System Bold Italic" size="13.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </HBox>
                     </children>
                     <padding>
                         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
@@ -107,6 +114,6 @@
                 </TextArea>
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="container" layoutX="6.0" layoutY="58.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #00000000;" AnchorPane.bottomAnchor="-8.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="294.0" AnchorPane.topAnchor="58.0" />
+        <AnchorPane fx:id="container" layoutX="227.0" layoutY="36.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #00000000;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="10.0" />
     </children>
 </AnchorPane>
